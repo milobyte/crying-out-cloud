@@ -16,14 +16,19 @@ app.get('/', function(req, res) {
 })
 
 app.post('/', function(req, res) {
-  const query = req.body.cityInput;
+  const city = req.body.cityInput;
+  const state = "," + req.body.stateInput;
+  const country = "," + req.body.countryInput;
+  const metric = req.body.metricInput;
+
   const apiKey = "618f7f9515fd5411ad291bdd4e92d124";
-  const url = "https://api.openweathermap.org/data/2.5/weather?q=" + query + "&appid=" + apiKey + "&units=metric";
-  const value = req.body.metricInput;
-  console.log(value);
+  var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city +
+    state + country + "&appid=" + apiKey;
 
   if (req.body.metricInput == "Fahrenheit") {
-    url = "https://api.openweathermap.org/data/2.5/weather?q=" + query + "&appid=" + apiKey + "&units=imperial";
+    url += "&units=imperial";
+  } else {
+    url += "&units=metric";
   }
 
   https.get(url, function(response) {
@@ -35,11 +40,11 @@ app.post('/', function(req, res) {
       const icon = weatherData.weather[0].icon;
       const imageURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
 
-      // if (req.body.metricInput == "Fahrenheit") {
-      //   res.write("<h1>The temperature in " + query + " is " + temp + " degrees Fahrenheit.</h1>");
-      // } else {
-        res.write("<h1>The temperature in " + query + " is " + temp + " degrees Celcius.</h1>");
-      // }
+      if (req.body.metricInput == "Fahrenheit") {
+        res.write("<h1>The temperature in " + city + " is " + temp + " degrees Fahrenheit.</h1>");
+      } else {
+        res.write("<h1>The temperature in " + city + " is " + temp + " degrees Celcius.</h1>");
+      }
       res.write("<h2>The weather is " + description + "</h2>");
       res.write("<img src=" + imageURL + ">");
       res.send();
