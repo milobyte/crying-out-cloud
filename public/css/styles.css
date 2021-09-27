@@ -4,7 +4,10 @@ body{
 }
 
 .weather-form{
-  margin: 7rem 40rem;
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
   color: #8CA1A5;
 }
 
